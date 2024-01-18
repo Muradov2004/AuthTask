@@ -1,0 +1,31 @@
+﻿@model List<Product>
+
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container">
+    <a class="btn btn-primary btn-lg mb-4" asp-controller="Admin" asp-action="Add">Add Product</a>
+    @if (Model.Count == 0)
+    {
+        <h3>Empty</h3>
+    }
+    else
+    {
+        <ul class="list-group list-group-flush">
+
+            @foreach (var product in Model)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="col-md-8">
+                        <h5>@product.Title</h5>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-end align-items-center">
+                        <a class="btn btn-danger" asp-controller="Admin" asp-action="Delete" asp-route-id="@product.Id">Delete</a>
+                        <a class="btn btn-primary" asp-controller="Admin" asp-action="Update" asp-route-id="@product.Id" style="margin-left:10px;">Update</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</div>

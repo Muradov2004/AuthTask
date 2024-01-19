@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -69,8 +68,7 @@ if (user is null)
         UserName = "admin@admin.com",
         Email = "admin@admin.com",
         FullName = "Admin",
-        Year = 2000,
-        EmailConfirmed = true
+        Year = 2000
     };
     var result = await userManager.CreateAsync(user, "Admin12!");
     if (!result.Succeeded) throw new Exception(result.Errors.First().Description);

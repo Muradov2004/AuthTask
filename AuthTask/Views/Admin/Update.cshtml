@@ -1,4 +1,4 @@
-﻿@model AddProductViewModel
+﻿@model UpdateProductViewModel
 
 @{
     var categories = ViewData["Categories"] as List<Category>;
@@ -7,7 +7,8 @@
 
 <h2>Add Product</h2>
 
-<form asp-controller="Admin" asp-action="Add" method="post">
+<form asp-controller="Admin" asp-action="Update" method="post">
+    <input asp-for="Id" type="hidden"/>
     <div class="form-group">
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" />
@@ -34,6 +35,5 @@
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Add Product</button>
+    <button type="submit" class="btn btn-primary">Update</button>
 </form>
-

@@ -10,6 +10,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public virtual DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Cart> Carts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,10 +25,11 @@ public class AppDbContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<AppUser>()
             .HasKey(x => x.Id);
 
-        modelBuilder.Entity<Product>()
-            .HasOne(p => p.AppUser)
-            .WithMany(u => u.Products)
-            .HasForeignKey(p => p.AppUserId);
+        modelBuilder.Entity<Cart>()
+            .HasOne(c => c.User)  
+            .WithOne(u => u.Cart)
+            .HasForeignKey<Cart>(c => c.UserId)  
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
 }

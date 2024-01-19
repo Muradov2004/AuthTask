@@ -32,7 +32,8 @@ public class Account : Controller
                 Email = model.Email,
                 FullName = model.FullName,
                 Year = model.Year,
-                UserName = model.Email
+                UserName = model.Email,
+                Cart = new()
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -59,19 +60,14 @@ public class Account : Controller
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user is not null)
             {
-                if (await _userManager.IsEmailConfirmedAsync(user))
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+
+                if (result.Succeeded)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-
-                    if (result.Succeeded)
-                    {
-                        return Redirect("/");
-                    }
-                    ModelState.AddModelError("all", "email or password not valid");
-
+                    return Redirect("/");
                 }
-                else
-                    ModelState.AddModelError("all", "email not confirmed");
+                ModelState.AddModelError("all", "email or password not valid");
+
             }
         }
         return View(model);

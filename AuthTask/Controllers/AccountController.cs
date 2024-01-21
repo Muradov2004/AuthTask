@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthTask.Controllers;
 
 [AllowAnonymous]
-public class Account : Controller
+public class AccountController : Controller
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
 
-    public Account(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -33,8 +33,8 @@ public class Account : Controller
                 FullName = model.FullName,
                 Year = model.Year,
                 UserName = model.Email,
-                Cart = new()
             };
+            user.Cart = new() { UserId = user.Id };
 
             var result = await _userManager.CreateAsync(user, model.Password);
 

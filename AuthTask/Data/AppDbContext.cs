@@ -26,9 +26,15 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .HasKey(x => x.Id);
 
         modelBuilder.Entity<Cart>()
-            .HasOne(c => c.User)  
+            .HasOne(c => c.User)
             .WithOne(u => u.Cart)
-            .HasForeignKey<Cart>(c => c.UserId)  
+            .HasForeignKey<Cart>(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<AppUser>()
+            .HasOne(u => u.Cart)
+            .WithOne(c => c.User)
+            .HasForeignKey<AppUser>(u => u.CartId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 

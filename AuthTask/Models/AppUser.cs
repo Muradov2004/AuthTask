@@ -6,5 +6,6 @@ public class AppUser : IdentityUser
 {
     public string FullName { get; set; } = null!;
     public int Year { get; set; }
+    public int CartId { get; set; }
     public Cart Cart { get; set; } = null!;
 }

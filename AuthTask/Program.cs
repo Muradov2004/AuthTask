@@ -70,6 +70,7 @@ if (user is null)
         FullName = "Admin",
         Year = 2000
     };
+    user.Cart = new() { UserId = user.Id };
     var result = await userManager.CreateAsync(user, "Admin12!");
     if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
 }

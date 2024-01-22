@@ -4,6 +4,7 @@ using AuthTask.Models.ViewModel;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthTask.Controllers;
 
@@ -88,4 +89,18 @@ public class AdminController : Controller
         }
         return View(model);
     }
+
+    [HttpGet]
+    public IActionResult Orders()
+    {
+        var orderedCarts = _context.Carts
+            .Where(cart => cart.IsOrdered)
+            .Include(cart => cart.Products)
+            .ToList();
+
+        var orderedCartsViewModels = _mapper.Map<List<OrderedCartViewModel>>(orderedCarts);
+
+        return View(orderedCartsViewModels);
+    }
+
 }

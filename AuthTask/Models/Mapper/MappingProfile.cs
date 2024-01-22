@@ -11,5 +11,8 @@ public class MappingProfile : Profile
         CreateMap<Product, AddProductViewModel>();
         CreateMap<UpdateProductViewModel, Product>();
         CreateMap<Product, UpdateProductViewModel>();
+        CreateMap<Product, OrderedProductViewModel>();
+        CreateMap<Cart, OrderedCartViewModel>()
+            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
     }
 }

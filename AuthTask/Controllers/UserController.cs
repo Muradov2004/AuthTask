@@ -34,7 +34,28 @@ public class UserController : Controller
         return View(productList);
     }
 
-    public async Task<IActionResult> AddOrderAsync(int id)
+    public async Task<IActionResult> CartAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == user!.Id);
+
+        if (!cart!.IsOrdered)
+        {
+            await _context.Entry(user!)
+                .Reference(u => u.Cart)
+                .Query()
+                .Include(c => c.Products)
+                .LoadAsync();
+
+            var productsInCart = user.Cart?.Products.ToList();
+
+            return View(productsInCart);
+        }
+        else return View(new List<Product>());
+
+    }
+
+    public async Task<IActionResult> AddCartAsync(int id)
     {
         var product = await _context.Products.FindAsync(id);
 
@@ -67,12 +88,26 @@ public class UserController : Controller
 
             return RedirectToAction("Index");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-           
             return RedirectToAction("Index");
         }
 
+    }
+
+    public async Task<IActionResult> OrderAsync()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == user!.Id);
+
+        cart!.IsOrdered = true;
+
+        cart.Products.Clear();
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index");
     }
 
 }
